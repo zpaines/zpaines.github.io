@@ -1,0 +1,31 @@
+---
+layout: blog
+title: Basketball Stat Correlations
+---
+<div class='content'>
+    <h3>Fantasy Basketball Stat Correlations</h3>
+    <h5><i>(Best Viewed on a Computer)</i></h5>
+    <p>
+        This is Part 2 of my <a href='/fantasy_basketball'>series on Fantasy Basketball</a>.
+        These posts will specifically focus on 9 category fantasy with
+        <i>Field Goal %, Free Throw %, Three Pointers Made, Points, Blocks, Steals, Turnovers, Assists, Rebounds</i>. 
+        They will also be focused on auction leagues with a $200 bidding budget.
+    </p>
+    <p>
+        The table below shows the Pearson correlation coefficients for all the 9 categories, as well as
+        my own derived free throw and field goal % values (<code>makes * (player % - league average %)</code>) that take volume into account.
+        Click on a cell in the table to view a chart of players' stats in the respective categories.
+    </p>
+    <p>
+        Essentially the higher the number, the more the two stats tend to move together. A 0 would indicate they have no relationship, and a negative number indicates they tend to move in opposite directions. Note that turnovers are negated for the correlation since fewer turnovers is a better result.
+    </p>
+</div>  
+<div class="animation" id="production-graph"></div>
+<div id="flex-container" class="flex-container" style="display:flex"></div>
+<script src="correlation_bundle4.js"></script>
+<div class='content'>
+    <h4>Source Code</h4>
+    <p> You can see the source code for this on <a href='https://github.com/zpaines/fantasy_blog'>my github</a>.</p>
+    <p> The players stats data is from <a href='https://www.basketball-reference.com/leagues/NBA_2020_per_game.html'>basketball reference</a> and the auction values are from <a href='https://basketball.fantasysports.yahoo.com/nba/draftanalysis'>yahoo</a>.</p>  
+</div>
+<script defer src="bundle.faa9d2bc3139d14935a6.js"></script>
