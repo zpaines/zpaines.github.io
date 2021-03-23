@@ -28,19 +28,21 @@ title: Basketball Stat Correlations
             if (player.children[1].firstElementChild.firstElementChild.children.length < 2) continue;
             if (player.firstElementChild.firstElementChild.textContent == "IR") continue;
             let playerName = player.children[1].firstElementChild.firstElementChild.children[1].firstElementChild.firstElementChild.firstElementChild.textContent
-            playerTeams[playerName] = teamName
+            if (!(teamName in playerTeams)) {
+                playerTeams[teamName] = []
+            }
+            playerTeams[teamName].push(playerName)
         }
     }
     let zachSite = 'https://www.zachsab.in/fantasy_basketball/your_league'
     let linkUrl = `${zachSite}?${new URLSearchParams(playerTeams)}`
-    
+   
     let body = document.getElementsByTagName('body')[0]
     body.removeChild(body.firstChild)
     let link = document.createElement('a')
     link.setAttribute('href', linkUrl)
     link.textContent = 'CLICK HERE'
-    body.appendChild(link)
-  </pre>  
+    body.appendChild(link)  </pre>  
   <img src='/media/fantasy_basketball/your_league_2.png' style="height:500px"/>
   <p>Click the link that appears in the top left!</p>
   <img src='/media/fantasy_basketball/your_league_3.png' style="height:500px"/>

@@ -8,7 +8,9 @@ let urlParams = new URLSearchParams(window.location.search);
 let playerTeams: Record<string, string> = {}
 //@ts-ignore
 for (let value of urlParams) {
-  playerTeams[value[0]] = value[1];
+  for (let player of value[1].split(",")) {
+    playerTeams[player] = value[0]
+  }
 }
 console.log(Object.keys(playerTeams).length);
 if (Object.keys(playerTeams).length < 1) {
