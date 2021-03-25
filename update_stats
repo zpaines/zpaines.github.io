@@ -3,6 +3,6 @@ git clone git@github.com:zpaines/zpaines.github.io.git
 (cd zpaines.github.io/fantasy_basketball \
  && python3 generate.py \
  && git add *bundle* \
- && git commit -m "update stats" \
+ && git commit -m "update stats" --allow-empty\
  && git push origin)
 rm -rf zpaines.github.io
