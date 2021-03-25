@@ -83,4 +83,5 @@ top_players.to_json(path_or_buf=path, orient='index')
 
 
 import subprocess
+subprocess.check_call('npm install', cwd=os.path.dirname(os.path.realpath(__file__)), shell=True)
 subprocess.check_call('npm run build', cwd=os.path.dirname(os.path.realpath(__file__)), shell=True)

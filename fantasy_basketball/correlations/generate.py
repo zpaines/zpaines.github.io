@@ -51,6 +51,7 @@ arr['Name'] = arr.index
 arr[fantasy_stats+['Name','Avg $']].to_json(path, orient='records')
 
 import subprocess
+subprocess.check_call('npm install', cwd=os.path.dirname(os.path.realpath(__file__)), shell=True)
 subprocess.check_call('npm run build', cwd=os.path.dirname(os.path.realpath(__file__)), shell=True)
 
 
