@@ -8,6 +8,11 @@ html {
 content {
     width: 100%;
 }
+img {
+  max-width: 100%;
+  margin: auto;
+  display: block;
+}
 .content {
     max-width:70ch;
     margin: 0 auto;

@@ -6,7 +6,21 @@ html {
     font-size:1.2em;
     font-family: 'Courier New', Courier, monospace  
 }
-
+img {
+  max-width: 100%;
+  margin: auto;
+  display: block;
+}
+video {
+  max-width: 100%;
+  margin: auto;
+  display: block;
+}
+.capimg p {
+    font-style: italic;
+    color: gray;
+    text-align: center;
+}
 a {
     text-decoration: none;
 }
