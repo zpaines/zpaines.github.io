@@ -1,0 +1,30 @@
+---
+layout: default
+title: Documentation
+---
+<h2>How to make sure you have bad documentation</h2>
+<ul>
+    <li>
+        <h4>Ensure that you have only a single tool for writing and searching all documentation.</h4>
+        <p>This will lead to all documentation, whether it’s for team members, other developers at the company, or non-engineers being subject to the same constraints and combined in search results. Since all of this documentation has different goals, audiences, and typical formatting, putting it all into one tool will inevitably make at least some of it suffer. Bonus points if this tool requires developers to make a branch cut of your codebase and go through a pull review process -- this will ensure that even typo fixes take 30+ minutes of developer time. Some documentation belongs next to the code, other documentation should be in a lighter weight and easy to edit format.</p>
+    </li>
+    <li>
+        <h4>Use design docs as documentation</h4>
+        <p>Design docs can be a useful starting point for documentation. They will generally highlight the problems that you are trying to solve with the code and should do a good job of explaining the high level approach. But no battle plan survives contact with the enemy! Design docs are frequently outdated or inaccurate, and might describe features that never got implemented due to time and resource constraints. There’s nothing wrong with linking to a design doc, but you should document the codebase as it exists in reality as well.</p>
+    </li>
+    <li>
+        <h4>Only document the “how” and the “what”, never the “why”</h4>
+        <p>How the architecture is set up or what the data structures are is certainly useful information. But this code will outlive the tenure of most of the people who worked on it. And the next poor sap who has to come in and fix bugs will be left scratching their head at why certain constraints were imposed on the code. It may seem obvious to you now, but 7 years later when nobody who worked on it is still at the company, the “why” is the only question that can’t be answered just by looking at the codebase. Bonus: it might prevent future people reading your code from thinking you were just dumb.</p>
+    </li>
+    <li>
+        <h4>Migrate documentation systems frequently</h4>
+        <p>Bonus points if you leave the old documentation around somewhere. Additional bonus points if you directly migrate all the old content but leave the URLs pointing at the old resource (yes, this happens). The more you do this the bigger mental overhead your developers have when writing and reading documentation. It also ensures that you have a lot of broken links in your docs, and that most older documentation will exist in two or three versions since it is infrequently updated and nobody wants to deal with the old version.</p>
+    </li>
+    <li>
+        <h4>Don’t worry about search</h4>
+        <p>Search is arguably the most important functionality of internal documentation at a larger company. One of the main use cases of internal docs is a developer with a problem trying to figure out what internal tool to use to solve it. If your search works well, they’ll find it. If it doesn’t, they’ll have to resort to asking around. Part of making search work is the actual search tool you use, but part of it is training people to write documentation that focuses on what keywords or phrases you want to associate with the code they’re documenting. This ties nicely into documenting the “why”, because people are not going to be searching for “code that uses a queue”, they are going to search for “code that lets me subscribe to events”.</p>
+    </li>
+</ul>
+<p>
+    Documentation is hard to get right. It doesn’t drive business metrics (at least internal documentation) and it doesn’t usually get people promoted. But I think that if you make it easy to write and easy to read, engineers will write pretty decent docs. If only because they’re sick of answering dumb questions in Slack.
+</p>
