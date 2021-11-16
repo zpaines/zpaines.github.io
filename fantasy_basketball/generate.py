@@ -16,7 +16,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-url = 'https://www.basketball-reference.com/leagues/NBA_2021_totals.html'
+url = 'https://www.basketball-reference.com/leagues/NBA_2022_totals.html'
 r = requests.get(url)
 r_html = r.text
 soup = BeautifulSoup(r_html,'html.parser')
