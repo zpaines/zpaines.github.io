@@ -250,7 +250,7 @@
         }
 
         function calculateAngle(sat) {
-            return sat.inertial_mode ? sat.inertial_angle : sat.velocity_angle + sat.velocity_angle_offset;
+            return (sat.inertial_mode ? sat.inertial_angle : sat.velocity_angle + sat.velocity_angle_offset);
         }
 
         function applyGravity(sat) {
@@ -321,10 +321,9 @@
 
             if (distance < 25) {
                 // TODO Add Bounding Box calculations
-
                 let relativeSpeed = Math.abs(player.vx - target.vx) + Math.abs(player.vy - target.vy);
 
-                if (relativeSpeed < 5 && Math.abs(player.angle - target.angle) < 0.5) {
+                if (relativeSpeed < 5 && Math.abs(calculateAngle(player) - calculateAngle(target))%(Math.PI*2) < 0.5) {
                     docked = true;
                     return;
                 }
