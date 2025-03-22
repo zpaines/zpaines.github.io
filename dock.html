@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starfish Simulator</title>
+    <title>Satellite Docking Game</title>
     <style>
         * {
             margin: 0;
@@ -46,8 +46,8 @@
 <body>
 
     <div id="overlay">
-        <h1>Starfish Simulator</h1>
-        <p>Use <b>Arrow Keys</b> to Rotate & Thrust. Drive safe!</p>
+        <h1>Satellite Docking Game 🚀</h1>
+        <p>Use <b>Arrow Keys</b> to Rotate & Thrust. Match orbit & dock carefully!</p>
     </div>
 
     <div id="levelSelector">
@@ -69,7 +69,7 @@
         resizeCanvas();
 
         const earth = { x: canvas.width / 2, y: canvas.height / 2, radius: 80 };
-        const G = 5000;
+        const G = 6000;
         let gameOver = false;
         let docked = false;
         let gameStarted = false;
@@ -92,9 +92,12 @@
                 y: earth.y + orbitRadius * Math.sin(angle),
                 vx: -Math.sin(angle) * speed,
                 vy: Math.cos(angle) * speed,
-                angle: Math.atan2(Math.cos(angle) * speed, -Math.sin(angle) * speed), 
+                inertial_angle: Math.atan2(Math.cos(angle) * speed, -Math.sin(angle) * speed), 
                 thrusting: false,
-                angle_offset: 0,
+                velocity_angle_offset: 0,
+                inertial_mode: false,
+                velocity_angle: Math.atan2(Math.cos(angle) * speed, -Math.sin(angle) * speed),
+                fuel_used: 0
             };
         }
 
@@ -121,6 +124,9 @@
             if (e.code == "Escape") {
                 pauseGame()
             }
+            if (e.code == "KeyI") {
+                player.inertial_mode = !player.inertial_mode
+            }
         });
 
         window.addEventListener("keyup", (e) => keys[e.code] = false);
@@ -130,6 +136,18 @@
             ctx.beginPath();
             ctx.arc(earth.x, earth.y, earth.radius, 0, Math.PI * 2);
             ctx.fill();
+            ctx.fillStyle = "grey";
+            ctx.font = "20px serif";
+            ctx.fillText((player.inertial_mode ? "INERTIAL" : "ALONG TRACK"), 10, canvas.height - 60);
+            ctx.fillStyle = "light grey";
+            ctx.font = "15px Courier New";
+            ctx.fillText(("('i' to change)"), 10, canvas.height - 40);
+            ctx.fillStyle = "grey";
+            ctx.font = "20px serif";
+            ctx.fillText((player.fuel_used.toFixed(1) + "g").padStart(6,"0"), 20, 20);
+            ctx.fillStyle = "light grey";
+            ctx.font = "10px Courier New";
+            ctx.fillText(("fuel used"), 80, 20);
         }
 
         function drawOrbit(sat) {
@@ -186,7 +204,7 @@
         function drawSatellite(sat, color) {
             ctx.save();
             ctx.translate(sat.x, sat.y);
-            ctx.rotate(sat.angle);
+            ctx.rotate(calculateAngle(sat));
             ctx.strokeStyle = color;
             ctx.lineWidth = 3;
             ctx.beginPath();
@@ -207,13 +225,19 @@
         }
 
         function updatePlayer() {
+            if (player.inertial_mode) {
+                player.velocity_angle_offset = player.inertial_angle - player.velocity_angle
+            } else {
+                player.inertial_angle = player.velocity_angle + player.velocity_angle_offset
+            }
             if (keys["ArrowLeft"]) {
-                player.angle_offset -= 0.02;
+                player.inertial_angle -= 0.02;
+                player.velocity_angle_offset -= 0.02;
             }
             if (keys["ArrowRight"]) {
-                player.angle_offset += 0.02;
+                player.inertial_angle += 0.02;
+                player.velocity_angle_offset += 0.02;
             }
-            player.angle+=player.angle_offset;
             if (keys["ArrowUp"]) {
                 player.thrusting = true;
                 // let ax = Math.cos(player.angle) * .2;
@@ -225,6 +249,9 @@
             }
         }
 
+        function calculateAngle(sat) {
+            return sat.inertial_mode ? sat.inertial_angle : sat.velocity_angle + sat.velocity_angle_offset;
+        }
 
         function applyGravity(sat) {
             let dx = earth.x - sat.x;
@@ -239,15 +266,16 @@
             let ax = force * (dx / dist);
             let ay = force * (dy / dist);
             if (sat.thrusting) {
-                ax += Math.cos(player.angle) * .05;
-                ay += Math.sin(player.angle) * .05;
+                ax += Math.cos(calculateAngle(sat)) * .02;
+                ay += Math.sin(calculateAngle(sat)) * .02;
+                sat.fuel_used += 0.1
             }
 
             sat.vx += ax;
             sat.vy += ay;
             sat.x += sat.vx;
             sat.y += sat.vy;
-            sat.angle = Math.atan2(sat.vy, sat.vx);
+            sat.velocity_angle = Math.atan2(sat.vy, sat.vx);
         }
 
         function pauseGame() {
