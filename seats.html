@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Seating</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #faf8f5;
+    color: #2b2522;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 2.6rem;
+    letter-spacing: 0.04em;
+    color: #2b2522;
+  }
+
+  header p {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9a8a7a;
+    margin-top: 0.4rem;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 auto 2.5rem;
+    max-width: 320px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #c8b89a;
+  }
+  .divider span {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #c8b89a;
+  }
+
+  .controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .controls input, .controls select {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    border: 1px solid #d6c8b4;
+    background: #fff;
+    color: #2b2522;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    outline: none;
+    min-width: 180px;
+  }
+
+  .controls input:focus, .controls select:focus {
+    border-color: #9a8a7a;
+  }
+
+  .table-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9a8a7a;
+    padding: 0.6rem 1.2rem;
+    text-align: left;
+    border-bottom: 1px solid #d6c8b4;
+  }
+
+  thead th:last-child { text-align: center; }
+
+  tbody tr {
+    border-bottom: 1px solid #ede7dd;
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: #f5f0e8; }
+
+  tbody td {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.9rem;
+    color: #2b2522;
+  }
+
+  .table-num {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #8b6f5e;
+  }
+
+  .no-table {
+    text-align: center;
+    color: #c8b89a;
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+
+  .count {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9a8a7a;
+  }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Seating Arrangements</h1>
+  <p>Wedding Guest List</p>
+</header>
+<div class="divider"><span>❧</span></div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Search guest…" oninput="filterTable()">
+  <select id="tableFilter" onchange="filterTable()">
+    <option value="">All tables</option>
+  </select>
+</div>
+
+<div class="table-wrap">
+  <table id="guestTable">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Table #</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <p class="count" id="count"></p>
+</div>
+
+<script>
+const guests = [
+  ["Agnes Tabah", 5], ["Alex Faulkner", 13], ["Ally Adams", 12], ["Amit Vemuri", 13],
+  ["Ana Marie Cauce", 6], ["Andrew Chang", 9], ["Andrew Polk", 7], ["Andrew Schechter", null],
+  ["Anjali Fisher", 10], ["Anna Daniel", 1], ["Anne Caldwell", 12], ["Annika Strauss", 3],
+  ["Antonio Escallon", 3], ["Autumn Patterson", 13], ["Avra Goldman", 6], ["Aydan Ellman", 13],
+  ["Bennett Leifer", 5], ["Bernadette Baird-Zars", 1], ["Brent Lo", 11], ["Caleb Warren", 8],
+  ["Cam Bailey", 11], ["Carley Little", 12], ["Carmen Homsi", 1], ["Charlie Landefeld", 10],
+  ["Clara Foung", 13], ["Corey Walsh", 12], ["Craig Harkey", 11], ["Daniel Mufson", null],
+  ["Danielle de Groot", 13], ["Deb Sabin", 2], ["Denise Imperial", 12], ["Douglass Luo", 9],
+  ["Drew Johnson", 11], ["Elaine Colligan", 10], ["Elena Feijoo", 5], ["Elena Sabin", 3],
+  ["Eli Sabin", 3], ["Elizabeth Kirk", 11], ["Emily Applewhite", 9], ["Emily Bazelon", 5],
+  ["Eva Grant", 10], ["Frank Van Mierlo", 6], ["Frankie Corrado", 3], ["Haley Brooks", 4],
+  ["Hilary Painter", 10], ["Ilana Coolidge", 8], ["Jacob Surpin", 9], ["Jane Kruskop", 8],
+  ["Jeff Baird", 1], ["Jim Sabin", 2], ["Jim Strauss", 4], ["Jo Engreitz", 13],
+  ["Joel Baird", 1], ["Jonson Berman", 10], ["Jordan Wong", 12], ["Joseph Min", 8],
+  ["Julian Clarke", 12], ["Julie Farkas", 7], ["Kahyee Fong", 11], ["Katey Strauss", 5],
+  ["Keiko Budech", 10], ["Kiara Ott", 9], ["Kristen Barnett", 13], ["Krystal Smith", 11],
+  ["Laurie Mufson", 5], ["Leena Kulkarni", 13], ["Lisa Geertjens", 7], ["Luisa Coakley", 3],
+  ["Lyda Harris", 11], ["Margery Sabin", 2], ["Marilyn Robie", 1], ["Martin Van Mierlo", 7],
+  ["Matt Pacult", 8], ["Matt Sabin", 3], ["Matthew Barrons", 4], ["Max Willard", 8],
+  ["Melissa Willard", 8], ["Mengli Shi", 9], ["Mia Stroutsos", 10], ["Michael Grant", 10],
+  ["Michael Sabin", 2], ["Michael Svedman", 12], ["Michelle Baird", 1], ["Naomi Brodkin", 8],
+  ["Nathan Brooks", 4], ["Nathaniel Baird", 1], ["Noah Coolidge", 7], ["Olivia Howell", 13],
+  ["Paddy Caldwell", 12], ["Paul Sabin", 4], ["Peter Ostergaard", 11], ["Rhonda Kaplan", 7],
+  ["Robbie Shaw", 9], ["Robert Yang", 10], ["Ruth Van Mierlo", 6], ["Sarah Davis", 11],
+  ["Seth Goldman", 7], ["Simon Bazelon", 4], ["Sophie Baird-Daniel", 2], ["Steve Greenberg", 6],
+  ["Steve Mufson", 5], ["Susan Joslyn", 6], ["Thomas Schaffner", 9], ["Tom Daniel", 2],
+  ["Tristan Paine", 9], ["Vivian Baird-Zars", 1], ["Zane Rankin", 11]
+];
+
+// Populate table filter
+const tables = [...new Set(guests.map(g => g[1]).filter(Boolean))].sort((a,b)=>a-b);
+const sel = document.getElementById('tableFilter');
+tables.forEach(t => {
+  const o = document.createElement('option');
+  o.value = t; o.textContent = `Table ${t}`;
+  sel.appendChild(o);
+});
+
+function renderRows(data) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = data.map(([name, tbl]) => `
+    <tr>
+      <td>${name}</td>
+      <td class="${tbl ? 'table-num' : 'no-table'}">${tbl ?? '—'}</td>
+    </tr>
+  `).join('');
+  document.getElementById('count').textContent = `${data.length} guest${data.length !== 1 ? 's' : ''}`;
+}
+
+function filterTable() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const t = document.getElementById('tableFilter').value;
+  const filtered = guests.filter(([name, tbl]) =>
+    name.toLowerCase().includes(q) &&
+    (t === '' || String(tbl) === t)
+  );
+  renderRows(filtered);
+}
+
+renderRows(guests);
+</script>
+</body>
+</html>
